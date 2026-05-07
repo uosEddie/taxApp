@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width = device-width, initial-scale=1.0">
+        <meta name="description" content="Tax Management App">
+        <meta name="Keywords" content="Tax Management App">
+
+        <link rel="stylesheet" href="styles.css">
+
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    </head>
+
+    <body>
+
+
+        <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-top">
+        <button onclick="menuOpen()" class="menu-btn" id="menu-btn">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+        <a href="profile.html" id="user-profile" class="mobile-user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+        
+            <button id="logout-btn" class="logout-btn">LogOut</button>
+        
+    </div>
+
+    <div class="mobile-nav-links" id="mobile-nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="records.html">Records</a>
+        <a href="tax-summary.html">Tax Summary</a>
+        <a href="user-management.html">User Management</a>
+        <a href="audit-log.html">Audit Log</a>
+    </div>
+</div>
+
+
+
+        <div class="admin-nav" id="admin-nav"> 
+            <h2 class="logo" id="logo">TaxApp</h2>
+            <a href="profile.html" id="user-profile" class="user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+            <button id="logout-btn" class="logout-btn">LogOut</button>
+        </div>
+
+        <div class="app" id="app">
+            <aside class="sidebar" id="sidebar">
+                <nav>
+                    <a href="dashboard.html"><button class="active">Dashboard</button></a>
+                    <a href="records.html"><button>Records</button></a>
+                    <a href="tax-summary.html"><button>Tax Summary</button></a>
+                    <a href="user-management.html"><button>User Management</button></a>
+                    <a href="audit-log.html"><button>Audit Log</button></a>
+                </nav>
+            </aside>  
+
+
+
+
+
+
+        <!-- MAIN APP -->
+        <div class="app" id="app">
+
+
+            
+
+
+
+
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content" id="main-content">
+
+
+                <!-- PAGE TITLE -->
+                <header class="top-card" id="top-card">
+
+                    <h1>User Profile</h1>
+                   
+
+                </header>
+
+
+
+
+
+                <!-- PROFILE CARD -->
+                <section class="card"
+                id="profile-card">
+
+                    <h2>
+                        Account Details
+                    </h2>
+
+
+
+                    <div class="row">
+
+                        <span>
+                            Full Name
+                        </span>
+
+                        <strong id="profile-name">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+
+
+
+                    <div class="row">
+
+                        <span>
+                            Email Address
+                        </span>
+
+                        <strong id="profile-email">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+
+
+
+
+                    <div class="row total">
+
+                        <span>
+                            User Role
+                        </span>
+
+                        <strong id="profile-role">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+
+
+
+
+
+
+        <!-- SCRIPTS -->
+        <script src="main.js"></script>
+
+        <script src="auth.js"></script>
+
+        <script src="logout.js"></script>
+
+        <script src="profile.js"></script>
+
+    </body>
+</html>

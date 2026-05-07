@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tax Management App">
+    <meta name="keywords" content="Tax Management App">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+
+<body>
+
+
+      <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-top">
+        <button onclick="menuOpen()" class="menu-btn" id="menu-btn">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+         <a href="profile.html" id="user-profile" class="mobile-user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+         <button id="mobile-logout-btn" class="mobile-logout-btn">LogOut</button>
+    </div>
+
+    <div class="mobile-nav-links" id="mobile-nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="records.html">Records</a>
+        <a href="tax-summary.html">Tax Summary</a>
+        <a href="user-management.html">User Management</a>
+        <a href="audit-log.html">Audit Log</a>
+    </div>
+</div>
+
+
+
+
+
+
+    <div class="admin-nav" id="admin-nav"> 
+        <h2 class="logo" id="logo">TaxApp</h2>
+         <a href="profile.html" id="user-profile" class="user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+       <button id="logout-btn" class="logout-btn">LogOut</button>
+    </div>
+
+    <div class="app" id="app">
+
+        <aside class="sidebar" id="sidebar">
+            <nav>
+                <a href="dashboard.html"><button>Dashboard</button></a>
+                <a href="records.html"><button>Records</button></a>
+                <a href="tax-summary.html"><button class="active">Tax Summary</button></a>
+                <a href="user-management.html"><button>User Management</button></a>
+                <a href="audit-log.html"><button>Audit Log</button></a>
+            </nav>
+        </aside>   
+        
+        <main class="main-content" id="main-content">
+
+            <header class="top-card" id="top-card">
+                <h1>Tax Summary</h1>
+            </header>
+
+            <!-- Summary Cards -->
+            <section class="summary-cards" id="summary-cards">
+
+                <div class="card" id="income-card">
+                    <h3>Total Income</h3>
+                    <p id="income-value">£12,500</p>
+                </div>
+
+                <div class="card" id="expense-card">
+                    <h3>Total Expenses</h3>
+                    <p id="expense-value">£4,200</p>
+                </div>
+
+                <div class="card" id="profit-card">
+                    <h3>Taxable Profit</h3>
+                    <p id="profit-value">£8,300</p>
+                </div>
+
+                <div class="card" id="tax-card">
+                    <h3>Tax Due</h3>
+                    <p id="tax-value">£1,660</p>
+                </div>
+
+            </section>
+
+            <!-- Chart Section -->
+            <section class="card" id="chart-section">
+                <h2>Breakdown</h2>
+                <div class="chart-box" id="chart-box">
+                    Pie Chart Here
+                </div>
+            </section>
+
+            <!-- Calculation Section -->
+            <section class="card" id="calculation-section">
+                <h2>Calculation Details</h2>
+
+                <div class="row">
+                    <span>Income</span>
+                    <strong id="calc-income">£12,500</strong>
+                </div>
+
+                <div class="row">
+                    <span>Expenses</span>
+                    <strong id="calc-expense">- £4,200</strong>
+                </div>
+
+                <div class="row">
+                    <span>Taxable Profit</span>
+                    <strong id="calc-profit">£8,300</strong>
+                </div>
+
+                <div class="row">
+                    <span>Tax Rate</span>
+                    <strong id="tax-rate">20%</strong>
+                </div>
+
+                <div class="row total">
+                    <span>Tax Due</span>
+                    <strong id="calc-tax">£1,660</strong>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+     <script src="main.js"></script>
+    <script src="tax-summary.js"></script>
+    <script src="auth.js"></script>
+     <script src="logout.js"></script>
+
+</body>
+</html>

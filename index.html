@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tax Management App">
+    <meta name="keywords" content="Tax Management App">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+
+<body>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-top">
+            <h2 class="logo">TaxApp</h2>
+
+            <button onclick="menuOpen()" class="menu-btn" id="menu-btn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <div class="mobile-nav-links" id="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="#features-section">Features</a>
+            <a href="#about-section">About</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </div>
+    </div>
+
+
+    <!-- DESKTOP NAV -->
+    <div class="admin-nav" id="admin-nav">
+        <h2 class="logo" id="logo">TaxApp</h2>
+
+        <div class="landing-links">
+            <a href="index.html">Home</a>
+            <a href="#features-section">Features</a>
+            <a href="#about-section">About</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="login.html">
+                <button class="profile-btn">Login</button>
+            </a>
+
+            <a href="register.html">
+                <button class="register-nav-btn">Register</button>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero-section">
+        <div class="hero-left">
+            <h1>
+                Smart Tax Management
+                For Modern Businesses
+            </h1>
+
+            <p>
+                Track income, expenses, tax summaries, audit logs and users
+                in one simple and secure platform.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="register.html">
+                    <button class="start-btn">Get Started</button>
+                </a>
+
+                <a href="login.html">
+                    <button class="learn-btn">Login</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="preview-card">
+                <h2>Dashboard Preview</h2>
+
+                <div class="preview-box">
+                    <div class="preview-item">
+                        <h3>Total Income</h3>
+                        <p>£12,500</p>
+                    </div>
+
+                    <div class="preview-item">
+                        <h3>Total Expenses</h3>
+                        <p>£4,200</p>
+                    </div>
+
+                    <div class="preview-item">
+                        <h3>Tax Due</h3>
+                        <p>£1,660</p>
+                    </div>
+
+                    <div class="preview-item">
+                        <h3>Net Profit</h3>
+                        <p>£8,300</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section" id="features-section">
+        <h2 class="section-title">Powerful Features</h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="material-symbols-outlined">analytics</span>
+                <h3>Dashboard Analytics</h3>
+                <p>View income, expenses, profit and tax summaries instantly.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <h3>Tax Calculations</h3>
+                <p>Calculate estimated tax from saved financial records.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="material-symbols-outlined">group</span>
+                <h3>User Management</h3>
+                <p>Manage taxpayers and tax officers in one system.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="material-symbols-outlined">shield</span>
+                <h3>Audit Logs</h3>
+                <p>Track logins, record changes and important actions.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section" id="about-section">
+        <div class="about-content">
+            <h2>Built For Simplicity & Efficiency</h2>
+
+            <p>
+                TaxApp helps users organise records, manage tax information,
+                track activity and understand financial summaries through
+                a clean dashboard interface.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <h2>Ready To Manage Your Taxes Smarter?</h2>
+
+        <p>
+            Create an account and start managing your records today.
+        </p>
+
+        <a href="register.html">
+            <button class="cta-btn">Create Account</button>
+        </a>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h2>TaxApp</h2>
+        <p>Modern Tax Management Platform</p>
+    </footer>
+
+
+    <script src="main.js"></script>
+
+</body>
+</html>

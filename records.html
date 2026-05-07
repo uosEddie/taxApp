@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width = device-width, initial-scale=1.0">
+        <meta name="description" content="Taxt Management App">
+        <meta name="Keywords" content="Tax Management App">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    </head>
+
+    <body>
+
+
+
+
+        <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-top">
+        <button onclick="menuOpen()" class="menu-btn" id="menu-btn">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+         <a href="profile.html" id="user-profile" class="mobile-user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+        <button id="mobile-logout-btn" class="mobile-logout-btn">LogOut</button>
+    </div>
+
+    <div class="mobile-nav-links" id="mobile-nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="records.html">Records</a>
+        <a href="tax-summary.html">Tax Summary</a>
+        <a href="user-management.html">User Management</a>
+        <a href="audit-log.html">Audit Log</a>
+    </div>
+</div>
+
+
+
+        <div class="admin-nav" id="admin-nav"> 
+            <h2 class="logo" id="logo">TaxApp</h2> 
+             <a href="profile.html" id="user-profile" class="user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+            <button id="logout-btn" class="logout-btn">LogOut</button>
+        </div>
+
+        <div class="app" id="app">
+            <aside class="sidebar" id="sidebar">
+                <nav>
+                    <a href="dashboard.html"><button>Dashboard</button></a>
+                    <a href="records.html"><button class="active">Records</button></a>
+                    <a href="tax-summary.html"><button>Tax Summary</button></a>
+                    <a href="user-management.html"><button>User Management</button></a>
+                    <a href="audit-log.html"><button>Audit Log</button></a>
+                </nav>
+            </aside>   
+            
+
+            <main class="main-content" id="main-content">
+                <header class="top-card" id="top-card">
+                    <h1>Records</h1>
+                </header>
+
+
+
+                 <section class="card">
+
+                <h2>Add Record</h2>
+                <form id="recordForm">
+                    <input type="date" id="date" required>
+                    <input type="text" id="description" placeholder="Description" required>
+
+                    <select id="category">
+                    <option value="Income">Income</option>
+                    <option value="Expense">Expense</option>
+                    </select>
+
+                    <input type="number" id="amount" placeholder="Amount" required>
+                    <button type="submit">Add</button>
+                </form>
+
+
+                </section>
+                <!-- Records Table -->
+                <section class="card">
+                <h2>All Records</h2>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="recordsTable"></tbody>
+                </table>
+            </section>
+               
+            </main>
+
+        </div>
+
+
+
+
+
+   <script src="main.js"></script>
+<script src="records.js"></script>
+<script src="auth.js"></script>
+ <script src="logout.js"></script>
+
+
+    </body>
+</html>

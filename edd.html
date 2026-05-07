@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Battle Simulation</title>
+  <style>
+    body { margin: 0; background: black; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function rand(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+class Fighter {
+  constructor(x, y, size, color, isBoss=false) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
+    this.isBoss = isBoss;
+
+    this.vx = rand(-2, 2);
+    this.vy = rand(-2, 2);
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    // bounce walls
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.size, this.size);
+  }
+}
+
+// create fighters
+let fighters = [];
+
+// boss
+fighters.push(new Fighter(canvas.width/2, canvas.height/2, 40, "red", true));
+
+// army
+for (let i = 0; i < 100; i++) {
+  fighters.push(new Fighter(rand(0, canvas.width), rand(0, canvas.height), 10, "cyan"));
+}
+
+function collide(a, b) {
+  return (
+    a.x < b.x + b.size &&
+    a.x + a.size > b.x &&
+    a.y < b.y + b.size &&
+    a.y + a.size > b.y
+  );
+}
+
+function resolve(a, b) {
+  // bounce
+  let temp = a.vx;
+  a.vx = b.vx;
+  b.vx = temp;
+
+  temp = a.vy;
+  a.vy = b.vy;
+  b.vy = temp;
+
+  // BOTH grow stronger
+  a.size += 0.5;
+  b.size += 0.5;
+
+  // speed increase (chaos effect)
+  a.vx *= 1.02;
+  a.vy *= 1.02;
+  b.vx *= 1.02;
+  b.vy *= 1.02;
+}
+
+function loop() {
+  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  fighters.forEach(f => f.update());
+
+  for (let i = 0; i < fighters.length; i++) {
+    for (let j = i + 1; j < fighters.length; j++) {
+      if (collide(fighters[i], fighters[j])) {
+        resolve(fighters[i], fighters[j]);
+      }
+    }
+  }
+
+  fighters.forEach(f => f.draw());
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+</body>
+</html>

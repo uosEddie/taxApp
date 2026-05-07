@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tax Management App">
+    <meta name="keywords" content="Tax Management App">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+
+<body>
+
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-top">
+            <button type="button" onclick="menuOpen()" class="menu-btn" id="menu-btn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+             <a href="profile.html" id="user-profile" class="mobile-user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+            <button id="mobile-logout-btn" class="mobile-logout-btn">LogOut</button>
+        </div>
+
+        <div class="mobile-nav-links" id="mobile-nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="records.html">Records</a>
+            <a href="tax-summary.html">Tax Summary</a>
+            <a href="user-management.html">User Management</a>
+            <a href="audit-log.html">Audit Log</a>
+        </div>
+    </div>
+
+    <div class="admin-nav" id="admin-nav"> 
+        <h2 class="logo" id="logo">TaxApp</h2>
+         <a href="profile.html" id="user-profile" class="user-profile"><img id="profile-pic" class="profile-pic" src="Images/stock-profile.jpeg"></a>
+        <button id="logout-btn" class="logout-btn">LogOut</button>
+    </div>
+
+    <div class="app" id="app">
+
+        <aside class="sidebar" id="sidebar">
+            <nav>
+                <a href="dashboard.html"><button>Dashboard</button></a>
+                <a href="records.html"><button>Records</button></a>
+                <a href="tax-summary.html"><button>Tax Summary</button></a>
+                <a href="user-management.html"><button>User Management</button></a>
+                <a href="audit-log.html"><button class="active">Audit Log</button></a>
+            </nav>
+        </aside>   
+        
+        <main class="main-content" id="main-content">
+
+            <header class="top-card" id="top-card">
+                <h1>Audit Log</h1>
+            </header>
+
+            <section class="card" id="audit-filter-card">
+                <h2>Filter Logs</h2>
+
+                <form id="auditFilterForm">
+                    <input type="date" id="log-date">
+                    
+                    <select id="log-user">
+                        <option value="">All Users</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Tax Officer">Tax Officer</option>
+                        <option value="Taxpayer">Taxpayer</option>
+                    </select>
+
+                    <select id="log-action">
+                        <option value="">All Actions</option>
+                        <option value="Created">Created</option>
+                        <option value="Updated">Updated</option>
+                        <option value="Deleted">Deleted</option>
+                        <option value="Login">Login</option>
+                        <option value="Logout">Logout</option>
+                    </select>
+
+                    <button type="submit">Filter</button>
+                </form>
+            </section>
+
+            <section class="card" id="audit-table-card">
+                <h2>System Activity</h2>
+
+                <table id="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="auditTable">
+                        <tr>
+                            <td>2026-04-29 10:30</td>
+                            <td>Admin</td>
+                            <td>Created</td>
+                            <td>Added new tax record</td>
+                            <td>Success</td>
+                        </tr>
+
+                        <tr>
+                            <td>2026-04-29 11:15</td>
+                            <td>Tax Officer</td>
+                            <td>Updated</td>
+                            <td>Updated user status</td>
+                            <td>Success</td>
+                        </tr>
+
+                        <tr>
+                            <td>2026-04-29 12:05</td>
+                            <td>Taxpayer</td>
+                            <td>Login</td>
+                            <td>User logged into system</td>
+                            <td>Success</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script src="logout.js"></script>
+
+</body>
+</html>
