@@ -1,15 +1,3 @@
-let savedUserDetails = localStorage.getItem("User Details");
-let userDetailsArray;
-
-if(savedUserDetails){
-    userDetailsArray = JSON.parse(savedUserDetails);
-}
-
-else{
-    userDetailsArray = [];
-}
-
-
 let registerForm = document.getElementById("registerForm");
 
 let registerName = document.getElementById("register-name");
@@ -19,37 +7,32 @@ let registerRole = document.getElementById("register-role");
 
 
 registerForm.addEventListener("submit", function(event){
-        event.preventDefault();
+    event.preventDefault();
 
+    let newUser = {
+        userName: registerName.value,
+        userEmail: registerEmail.value,
+        userPassword: registerPassword.value,
+        userRole: registerRole.value
+    };
 
-let newUser = {
-    userName : registerName.value,
-    userEmail : registerEmail.value,
-    userPassword : registerPassword.value,
-    userRole : registerRole.value,
-}
+    fetch("http://localhost:3000/register", {
+        method: "POST",
 
-let existingUser = false;
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-userDetailsArray.forEach(function(user){
-    if(user.userEmail === registerEmail.value){
-        existingUser = true;
-    }
-})
+        body: JSON.stringify(newUser)
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        alert(data.message);
 
-if(existingUser === true){
-    alert("Email already registered");
-    return;
-}
-
-userDetailsArray.push(newUser);
-console.log(newUser);
-
-let newUserText = JSON.stringify(userDetailsArray);
-localStorage.setItem("User Details", newUserText);
-
-alert("Registration successful");
-window.location.href = "login.html";
-
+        if(data.success === true){
+            window.location.href = "login.html";
+        }
+    });
 });
-

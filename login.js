@@ -1,17 +1,3 @@
-let savedLogin = localStorage.getItem("User Details");
-
-let loginUserArray;
-
-if(savedLogin){
-    loginUserArray = JSON.parse(savedLogin);
-}
-
-else{
-    loginUserArray = [];
-}
-
-
-
 let loginForm = document.getElementById("loginForm");
 
 let loginEmail = document.getElementById("login-email");
@@ -21,28 +7,31 @@ let loginPassword = document.getElementById("login-password");
 loginForm.addEventListener("submit", function(event){
     event.preventDefault();
 
-    console.log(loginEmail.value);
-    console.log(loginPassword.value);
+    let loginUser = {
+        userEmail: loginEmail.value,
+        userPassword: loginPassword.value
+    };
 
-    
-    let userFound = false;
+    fetch("http://localhost:3000/login", {
+        method: "POST",
 
-    loginUserArray.forEach(function(found){
-        if(loginEmail.value === found.userEmail && loginPassword.value === found.userPassword){
-            userFound = true;
-            let currentUser = JSON.stringify(found);
-            localStorage.setItem("Current User", currentUser);
-             window.location.href = "dashboard.html";
-        }  
-        
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(loginUser)
     })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        alert(data.message);
 
-    if (userFound === false){
-            alert("Wrong email or password");
-          
-        
-    }
+        if(data.success === true){
+            let currentUserText = JSON.stringify(data.user);
+            localStorage.setItem("Current User", currentUserText);
 
-   
-    
+            window.location.href = "dashboard.html";
+        }
+    });
 });

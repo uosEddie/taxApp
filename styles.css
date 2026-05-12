@@ -484,6 +484,15 @@ tbody tr:hover {
 /* MOBILE SCREEN NAV BARS */
 @media (max-width: 768px) {
 
+    /* AUTH PAGES */
+.auth-container {
+    max-height: 100vh;
+    background-color: #F5F7FB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
     .admin-nav {
         display: none;
     }
