@@ -12,7 +12,7 @@ loginForm.addEventListener("submit", function(event){
         userPassword: loginPassword.value
     };
 
-    fetch("https://taxapp-production-f188.up.railway.app/login", {
+    fetch("taxapp-production-940c.up.railway.app", {
         method: "POST",
 
         headers: {

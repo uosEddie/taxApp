@@ -16,7 +16,7 @@ registerForm.addEventListener("submit", function(event){
         userRole: registerRole.value
     };
 
-    fetch("https://taxapp-production-f188.up.railway.app/register", {
+    fetch("taxapp-production-940c.up.railway.app", {
         method: "POST",
 
         headers: {
