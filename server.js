@@ -6,17 +6,13 @@ const cors = require("cors");
 
 const app = express();
 
-const allowedOrigins = [
-    "https://taxappeddy.netlify.app",
-    "http://127.0.0.1:5500",
-    "http://localhost:5500"
-];
-
 app.use(cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.options(/.*/, cors());
 
 app.use(express.json());
 
