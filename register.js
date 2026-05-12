@@ -16,7 +16,7 @@ registerForm.addEventListener("submit", function(event){
         userRole: registerRole.value
     };
 
-    fetch("http://localhost:3000/register", {
+    fetch("https://taxapp-production-f188.up.railway.app/register", {
         method: "POST",
 
         headers: {
