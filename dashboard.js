@@ -1,73 +1,61 @@
+let currentUserText = localStorage.getItem("Current User");
+let currentUser = JSON.parse(currentUserText);
 
-let getCurrentUser = localStorage.getItem("Current User");
-let currentUser = JSON.parse(getCurrentUser);
-let recordsKey = "User Records - " + currentUser.userEmail;
-
-let dashboardSavedRecords = localStorage.getItem(recordsKey);
-let dashboardSavedArray;
-
-if(dashboardSavedRecords){
-    dashboardSavedArray = JSON.parse(dashboardSavedRecords);
-}
-
-else{
-    dashboardSavedArray = [];
-}
-
-
-
-
+let backendURL = "https://taxapp-production-940c.up.railway.app";
 
 let incomeValue = document.getElementById("incomeValue");
 let expenseValue = document.getElementById("expenseValue");
 let taxValue = document.getElementById("taxValue");
 let profitValue = document.getElementById("profitValue");
-
+let recordsBody = document.getElementById("recordsBody");
 
 let totalIncome = 0;
 let totalExpense = 0;
 
-dashboardSavedArray.forEach(function(record){
-    record.recordCategory;
-
-    if(record.recordCategory === "Income"){
-        totalIncome = totalIncome + Number(record.recordAmount);
-    }
-    else if(record.recordCategory === "Expense"){
-        totalExpense = totalExpense + Number(record.recordAmount);
-    }
 
 
-
-let recordsBody = document.getElementById("recordsBody");
-
-let recentRecord = document.createElement("tr");
-
-recentRecord.innerHTML= ` <td>${record.recordDate}</td>
-                    <td>${record.recordDescription}</td>
-                    <td>${record.recordCategory}</td>
-                    <td>£${record.recordAmount}</td>`;
-
-
-
-                    recordsBody.appendChild(recentRecord);
-
-    
-
+fetch(`${backendURL}/records/${currentUser.id}`)
+.then(function(response){
+    return response.json();
 })
+.then(function(data){
 
+    if(data.success === true){
 
-incomeValue.innerHTML = `£ ${totalIncome}`;
-expenseValue.innerHTML = `£ ${totalExpense}`;
+        recordsBody.innerHTML = "";
 
+        data.records.forEach(function(record){
 
+            if(record.category === "Income"){
+                totalIncome = totalIncome + Number(record.amount);
+            }
 
-let netProfit = totalIncome - totalExpense;
-profitValue.innerHTML = `£ ${netProfit}`;
+            else if(record.category === "Expense"){
+                totalExpense = totalExpense + Number(record.amount);
+            }
 
-let totalTax = netProfit * 0.2;
-taxValue.innerHTML = `£ ${totalTax.toFixed(2)}`;
+            let recentRecord = document.createElement("tr");
 
+            recentRecord.innerHTML = `
+                <td>${record.record_date}</td>
+                <td>${record.description}</td>
+                <td>${record.category}</td>
+                <td>£${record.amount}</td>
+            `;
 
+            recordsBody.appendChild(recentRecord);
 
+        });
 
+        incomeValue.innerHTML = `£ ${totalIncome.toFixed(2)}`;
+        expenseValue.innerHTML = `£ ${totalExpense.toFixed(2)}`;
+
+        let netProfit = totalIncome - totalExpense;
+        profitValue.innerHTML = `£ ${netProfit.toFixed(2)}`;
+
+        let totalTax = netProfit * 0.2;
+        taxValue.innerHTML = `£ ${totalTax.toFixed(2)}`;
+
+    }
+
+});

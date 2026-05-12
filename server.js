@@ -43,6 +43,8 @@ app.get("/", function(req, res){
 
 });
 
+
+
 app.post("/register", function(req, res){
 
     let userData = req.body;
@@ -85,6 +87,8 @@ app.post("/register", function(req, res){
     );
 
 });
+
+
 
 app.post("/login", function(req, res){
 
@@ -137,8 +141,212 @@ app.post("/login", function(req, res){
 
 });
 
+
+
+app.post("/records", function(req, res){
+
+    let recordData = req.body;
+
+    let sql = `
+        INSERT INTO records(user_id, record_date, description, category, amount)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+        sql,
+        [
+            recordData.userId,
+            recordData.recordDate,
+            recordData.recordDescription,
+            recordData.recordCategory,
+            recordData.recordAmount
+        ],
+
+        function(error, result){
+
+            if(error){
+
+                res.json({
+                    success: false,
+                    message: "Record could not be saved"
+                });
+
+            }
+
+            else{
+
+                res.json({
+                    success: true,
+                    message: "Record saved successfully"
+                });
+
+            }
+
+        }
+    );
+
+});
+
+
+
+app.get("/records/:userId", function(req, res){
+
+    let userId = req.params.userId;
+
+    let sql = `
+        SELECT * FROM records
+        WHERE user_id = ?
+        ORDER BY id DESC
+    `;
+
+    db.query(sql, [userId], function(error, results){
+
+        if(error){
+
+            res.json({
+                success: false,
+                message: "Could not load records"
+            });
+
+        }
+
+        else{
+
+            res.json({
+                success: true,
+                records: results
+            });
+
+        }
+
+    });
+
+});
+
+
+
+app.delete("/records/:recordId", function(req, res){
+
+    let recordId = req.params.recordId;
+
+    let sql = `
+        DELETE FROM records
+        WHERE id = ?
+    `;
+
+    db.query(sql, [recordId], function(error, result){
+
+        if(error){
+
+            res.json({
+                success: false,
+                message: "Record could not be deleted"
+            });
+
+        }
+
+        else{
+
+            res.json({
+                success: true,
+                message: "Record deleted successfully"
+            });
+
+        }
+
+    });
+
+});
+
+
+
+app.put("/records/:recordId", function(req, res){
+
+    let recordId = req.params.recordId;
+
+    let recordData = req.body;
+
+    let sql = `
+        UPDATE records
+        SET record_date = ?, description = ?, category = ?, amount = ?
+        WHERE id = ?
+    `;
+
+    db.query(
+        sql,
+        [
+            recordData.recordDate,
+            recordData.recordDescription,
+            recordData.recordCategory,
+            recordData.recordAmount,
+            recordId
+        ],
+
+        function(error, result){
+
+            if(error){
+
+                res.json({
+                    success: false,
+                    message: "Record could not be updated"
+                });
+
+            }
+
+            else{
+
+                res.json({
+                    success: true,
+                    message: "Record updated successfully"
+                });
+
+            }
+
+        }
+    );
+
+});
+
+
+
+app.get("/users", function(req, res){
+
+    let sql = `
+        SELECT id, name, email, role
+        FROM users
+        ORDER BY id DESC
+    `;
+
+    db.query(sql, function(error, results){
+
+        if(error){
+
+            res.json({
+                success: false,
+                message: "Could not load users"
+            });
+
+        }
+
+        else{
+
+            res.json({
+                success: true,
+                users: results
+            });
+
+        }
+
+    });
+
+});
+
+
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, function(){
+
     console.log("Server running on port " + PORT);
+
 });
