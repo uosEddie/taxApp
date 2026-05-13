@@ -975,35 +975,45 @@ body{
 
 /*MESSAGE BOX */
 
-
-.message-box {
+.message-box{
     display: none;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin: 20px auto;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0,0,0,0.6);
+
+    z-index: 99999;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.message-content{
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
     width: 90%;
-    max-width: 700px;
-    font-weight: 600;
+    max-width: 450px;
+
     text-align: center;
+
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.message-box.success {
-    display: block;
-    background-color: #DCFCE7;
-    color: #166534;
-    border: 1px solid #86EFAC;
+.message-box.success .message-content{
+    color: green;
 }
 
-.message-box.error {
-    display: block;
-    background-color: #FEE2E2;
-    color: #991B1B;
-    border: 1px solid #FCA5A5;
+.message-box.error .message-content{
+    color: red;
 }
 
-.message-box.warning {
-    display: block;
-    background-color: #FEF3C7;
-    color: #92400E;
-    border: 1px solid #FCD34D;
+.message-box.warning .message-content{
+    color: orange;
 }
