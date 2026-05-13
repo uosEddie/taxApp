@@ -1017,3 +1017,10 @@ body{
 .message-box.warning .message-content{
     color: orange;
 }
+
+.tax-note {
+    width: 95%;
+    margin-top: 15px;
+    color: #6B7280;
+    font-size: 0.95rem;
+}
