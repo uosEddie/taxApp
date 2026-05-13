@@ -17,6 +17,13 @@ let summaryTaxCard = document.getElementById("tax-value");
 let totalIncome = 0;
 let totalExpense = 0;
 
+function formatDate(dateString){
+
+    let date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB");
+
+}
 
 
 function calculateUKTax(profit){

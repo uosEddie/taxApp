@@ -12,7 +12,13 @@ let recordsBody = document.getElementById("recordsBody");
 let totalIncome = 0;
 let totalExpense = 0;
 
+function formatDate(dateString){
 
+    let date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB");
+
+}
 
 function calculateUKTax(profit){
 
@@ -80,7 +86,7 @@ fetch(`${backendURL}/records/${currentUser.id}`)
             let recentRecord = document.createElement("tr");
 
             recentRecord.innerHTML = `
-                <td>${record.record_date}</td>
+                <td>${formatDate(record.record_date)}</td>
                 <td>${record.description}</td>
                 <td>${record.category}</td>
                 <td>£${record.amount}</td>
@@ -105,3 +111,4 @@ fetch(`${backendURL}/records/${currentUser.id}`)
     }
 
 });
+

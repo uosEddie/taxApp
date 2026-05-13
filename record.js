@@ -15,12 +15,19 @@ else{
 }
 
 
+function formatDate(dateString){
+
+    let date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB");
+
+}
 
 function displayRecord(record, index) {
     let displayNewRecord = document.createElement("tr");
 
     displayNewRecord.innerHTML = `
-        <td>${record.recordDate}</td>
+        <td>${formatDate(record.record_date)}</td>
         <td>${record.recordDescription}</td>
         <td>${record.recordCategory}</td>
         <td>£${record.recordAmount}</td>
