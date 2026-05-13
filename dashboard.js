@@ -53,7 +53,35 @@ fetch(`${backendURL}/records/${currentUser.id}`)
         let netProfit = totalIncome - totalExpense;
         profitValue.innerHTML = `£ ${netProfit.toFixed(2)}`;
 
-        let totalTax = netProfit * 0.2;
+        function calculateUKTax(profit){
+
+    let tax = 0;
+
+    if(profit <= 12570){
+        tax = 0;
+    }
+
+    else if(profit <= 50270){
+        tax = (profit - 12570) * 0.20;
+    }
+
+    else if(profit <= 125140){
+        let basicTax = (50270 - 12570) * 0.20;
+        let higherTax = (profit - 50270) * 0.40;
+
+        tax = basicTax + higherTax;
+    }
+
+    else{
+        let basicTax = (50270 - 12570) * 0.20;
+        let higherTax = (125140 - 50270) * 0.40;
+        let additionalTax = (profit - 125140) * 0.45;
+
+        tax = basicTax + higherTax + additionalTax;
+    }
+
+    return tax;
+}
         taxValue.innerHTML = `£ ${totalTax.toFixed(2)}`;
 
     }
