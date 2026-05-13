@@ -1,12 +1,18 @@
-let savedCurrentUser = localStorage.getItem("Current User");
-let currentUser = JSON.parse(savedCurrentUser);
+let roleCheckUserText = localStorage.getItem("Current User");
 
-if(currentUser.role === "Taxpayer"){
+let roleCheckUser = JSON.parse(roleCheckUserText);
 
-    showMessage("Access denied. Taxpayers cannot access this page.", "warning");
+if(roleCheckUser.role === "Taxpayer"){
+
+    showMessage(
+        "Access denied. Taxpayers cannot access this page.",
+        "warning"
+    );
 
     setTimeout(function(){
+
         window.location.href = "dashboard.html";
+
     }, 3000);
 
 }
