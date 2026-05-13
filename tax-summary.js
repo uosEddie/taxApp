@@ -17,28 +17,9 @@ let summaryTaxCard = document.getElementById("tax-value");
 let totalIncome = 0;
 let totalExpense = 0;
 
-fetch(`${backendURL}/records/${currentUser.id}`)
-.then(function(response){
-    return response.json();
-})
-.then(function(data){
 
-    if(data.success === true){
 
-        data.records.forEach(function(record){
-
-            if(record.category === "Income"){
-                totalIncome = totalIncome + Number(record.amount);
-            }
-
-            else if(record.category === "Expense"){
-                totalExpense = totalExpense + Number(record.amount);
-            }
-
-        });
-
-        let taxableProfit = totalIncome - totalExpense;
-        function calculateUKTax(profit){
+function calculateUKTax(profit){
 
     let tax = 0;
 
@@ -51,15 +32,20 @@ fetch(`${backendURL}/records/${currentUser.id}`)
     }
 
     else if(profit <= 125140){
+
         let basicTax = (50270 - 12570) * 0.20;
+
         let higherTax = (profit - 50270) * 0.40;
 
         tax = basicTax + higherTax;
     }
 
     else{
+
         let basicTax = (50270 - 12570) * 0.20;
+
         let higherTax = (125140 - 50270) * 0.40;
+
         let additionalTax = (profit - 125140) * 0.45;
 
         tax = basicTax + higherTax + additionalTax;
@@ -68,16 +54,56 @@ fetch(`${backendURL}/records/${currentUser.id}`)
     return tax;
 }
 
+
+
+fetch(`${backendURL}/records/${currentUser.id}`)
+.then(function(response){
+
+    return response.json();
+
+})
+.then(function(data){
+
+    if(data.success === true){
+
+        data.records.forEach(function(record){
+
+            if(record.category === "Income"){
+
+                totalIncome = totalIncome + Number(record.amount);
+
+            }
+
+            else if(record.category === "Expense"){
+
+                totalExpense = totalExpense + Number(record.amount);
+
+            }
+
+        });
+
+        let taxableProfit = totalIncome - totalExpense;
+
+        let taxDue = calculateUKTax(taxableProfit);
+
         calcIncome.innerHTML = `£ ${totalIncome.toFixed(2)}`;
+
         calcExpense.innerHTML = `£ ${totalExpense.toFixed(2)}`;
+
         calcProfit.innerHTML = `£ ${taxableProfit.toFixed(2)}`;
-        taxRate.innerHTML = `20%`;
+
+        taxRate.innerHTML = `UK tax bands`;
+
         calcTax.innerHTML = `£ ${taxDue.toFixed(2)}`;
 
         summaryIncomeCard.innerHTML = `£ ${totalIncome.toFixed(2)}`;
+
         summaryExpenseCard.innerHTML = `£ ${totalExpense.toFixed(2)}`;
+
         summaryProfitCard.innerHTML = `£ ${taxableProfit.toFixed(2)}`;
+
         summaryTaxCard.innerHTML = `£ ${taxDue.toFixed(2)}`;
+
     }
 
 });
