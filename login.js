@@ -25,7 +25,12 @@ loginForm.addEventListener("submit", function(event){
         return response.json();
     })
     .then(function(data){
-        alert(data.message);
+        if(data.success === true){
+    showMessage(data.message, "success");
+}
+else{
+    showMessage(data.message, "error");
+}
 
         if(data.success === true){
             let currentUserText = JSON.stringify(data.user);
