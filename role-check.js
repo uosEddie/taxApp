@@ -6,6 +6,6 @@ if(currentUser.role === "Taxpayer"){
 
 setTimeout(function(){
     window.location.href = "dashboard.html";
-}, 2500);
+}, 3000);
     window.location.href = "dashboard.html";
 }

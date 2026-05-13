@@ -969,3 +969,41 @@ body{
     flex-direction: column;
 }
 }
+
+
+
+
+/*MESSAGE BOX */
+
+
+.message-box {
+    display: none;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 700px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.message-box.success {
+    display: block;
+    background-color: #DCFCE7;
+    color: #166534;
+    border: 1px solid #86EFAC;
+}
+
+.message-box.error {
+    display: block;
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
+}
+
+.message-box.warning {
+    display: block;
+    background-color: #FEF3C7;
+    color: #92400E;
+    border: 1px solid #FCD34D;
+}
