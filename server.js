@@ -50,8 +50,8 @@ app.post("/register", function(req, res){
     let userData = req.body;
 
     let sql = `
-        INSERT INTO users(name, email, password, role)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO users(name, email, password, role, status)
+        VALUES (?, ?, ?, ?, ?)
     `;
 
     db.query(
@@ -60,7 +60,8 @@ app.post("/register", function(req, res){
             userData.userName,
             userData.userEmail,
             userData.userPassword,
-            userData.userRole
+            userData.userRole,
+            "Active"
         ],
 
         function(error, result){
@@ -119,11 +120,24 @@ app.post("/login", function(req, res){
 
             else if(results.length > 0){
 
-                res.json({
-                    success: true,
-                    message: "Login successful",
-                    user: results[0]
-                });
+                if(results[0].status === "Inactive"){
+
+                    res.json({
+                        success: false,
+                        message: "This account is inactive. Please contact an administrator."
+                    });
+
+                }
+
+                else{
+
+                    res.json({
+                        success: true,
+                        message: "Login successful",
+                        user: results[0]
+                    });
+
+                }
 
             }
 
@@ -312,7 +326,7 @@ app.put("/records/:recordId", function(req, res){
 app.get("/users", function(req, res){
 
     let sql = `
-        SELECT id, name, email, role
+        SELECT id, name, email, role, status
         FROM users
         ORDER BY id DESC
     `;
@@ -333,6 +347,88 @@ app.get("/users", function(req, res){
             res.json({
                 success: true,
                 users: results
+            });
+
+        }
+
+    });
+
+});
+
+
+
+app.put("/users/:userId", function(req, res){
+
+    let userId = req.params.userId;
+
+    let userData = req.body;
+
+    let sql = `
+        UPDATE users
+        SET role = ?, status = ?
+        WHERE id = ?
+    `;
+
+    db.query(
+        sql,
+        [
+            userData.role,
+            userData.status,
+            userId
+        ],
+
+        function(error, result){
+
+            if(error){
+
+                res.json({
+                    success: false,
+                    message: "User update failed"
+                });
+
+            }
+
+            else{
+
+                res.json({
+                    success: true,
+                    message: "User updated successfully"
+                });
+
+            }
+
+        }
+    );
+
+});
+
+
+
+app.delete("/users/:userId", function(req, res){
+
+    let userId = req.params.userId;
+
+    let sql = `
+        DELETE FROM users
+        WHERE id = ?
+    `;
+
+    db.query(sql, [userId], function(error, result){
+
+        if(error){
+
+            res.json({
+                success: false,
+                message: "User could not be deleted"
+            });
+
+        }
+
+        else{
+
+            res.json({
+                success: true,
+                message: "User deleted successfully"
             });
 
         }
