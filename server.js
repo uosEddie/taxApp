@@ -37,6 +37,33 @@ db.connect(function(error){
 
 });
 
+
+
+function addAuditLog(userId, userName, action, description, status){
+
+    let sql = `
+        INSERT INTO audit_logs(user_id, user_name, action, description, status)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+        sql,
+        [userId, userName, action, description, status],
+
+        function(error, result){
+
+            if(error){
+                console.log("Audit log failed");
+                console.log(error);
+            }
+
+        }
+    );
+
+}
+
+
+
 app.get("/", function(req, res){
 
     res.send("Backend is running");
@@ -76,6 +103,14 @@ app.post("/register", function(req, res){
             }
 
             else{
+
+                addAuditLog(
+                    result.insertId,
+                    userData.userName,
+                    "Register",
+                    "New user account created",
+                    "Success"
+                );
 
                 res.json({
                     success: true,
@@ -130,6 +165,14 @@ app.post("/login", function(req, res){
                 }
 
                 else{
+
+                    addAuditLog(
+                        results[0].id,
+                        results[0].name,
+                        "Login",
+                        "User logged into the system",
+                        "Success"
+                    );
 
                     res.json({
                         success: true,
@@ -188,6 +231,14 @@ app.post("/records", function(req, res){
             }
 
             else{
+
+                addAuditLog(
+                    recordData.userId,
+                    "User",
+                    "Add Record",
+                    "Financial record added",
+                    "Success"
+                );
 
                 res.json({
                     success: true,
@@ -261,6 +312,14 @@ app.delete("/records/:recordId", function(req, res){
 
         else{
 
+            addAuditLog(
+                null,
+                "User",
+                "Delete Record",
+                "Financial record deleted",
+                "Success"
+            );
+
             res.json({
                 success: true,
                 message: "Record deleted successfully"
@@ -308,6 +367,14 @@ app.put("/records/:recordId", function(req, res){
             }
 
             else{
+
+                addAuditLog(
+                    null,
+                    "User",
+                    "Update Record",
+                    "Financial record updated",
+                    "Success"
+                );
 
                 res.json({
                     success: true,
@@ -390,6 +457,14 @@ app.put("/users/:userId", function(req, res){
 
             else{
 
+                addAuditLog(
+                    userId,
+                    "Admin",
+                    "Update User",
+                    "User role or status updated",
+                    "Success"
+                );
+
                 res.json({
                     success: true,
                     message: "User updated successfully"
@@ -426,9 +501,51 @@ app.delete("/users/:userId", function(req, res){
 
         else{
 
+            addAuditLog(
+                userId,
+                "Admin",
+                "Delete User",
+                "User account deleted",
+                "Success"
+            );
+
             res.json({
                 success: true,
                 message: "User deleted successfully"
+            });
+
+        }
+
+    });
+
+});
+
+
+
+app.get("/audit-logs", function(req, res){
+
+    let sql = `
+        SELECT *
+        FROM audit_logs
+        ORDER BY created_at DESC
+    `;
+
+    db.query(sql, function(error, results){
+
+        if(error){
+
+            res.json({
+                success: false,
+                message: "Could not load audit logs"
+            });
+
+        }
+
+        else{
+
+            res.json({
+                success: true,
+                logs: results
             });
 
         }
