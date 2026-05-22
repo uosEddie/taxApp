@@ -27,12 +27,16 @@ const db = mySql.createConnection({
 db.connect(function(error){
 
     if(error){
+
         console.log("Database connection failed");
         console.log(error);
+
     }
 
     else{
+
         console.log("Database connected successfully");
+
     }
 
 });
@@ -50,11 +54,13 @@ function addAuditLog(userId, userName, action, description, status){
         sql,
         [userId, userName, action, description, status],
 
-        function(error, result){
+        function(error){
 
             if(error){
+
                 console.log("Audit log failed");
                 console.log(error);
+
             }
 
         }
@@ -67,6 +73,18 @@ function addAuditLog(userId, userName, action, description, status){
 app.get("/", function(req, res){
 
     res.send("Backend is running");
+
+});
+
+
+
+app.get("/test-version", function(req, res){
+
+    res.json({
+        success: true,
+        message: "Latest Railway backend is running",
+        version: "audit-log-fix-v2"
+    });
 
 });
 
@@ -131,7 +149,8 @@ app.post("/login", function(req, res){
     let loginData = req.body;
 
     let sql = `
-        SELECT * FROM users
+        SELECT *
+        FROM users
         WHERE email = ? AND password = ?
     `;
 
@@ -219,7 +238,7 @@ app.post("/records", function(req, res){
             recordData.recordAmount
         ],
 
-        function(error, result){
+        function(error){
 
             if(error){
 
@@ -259,7 +278,8 @@ app.get("/records/:userId", function(req, res){
     let userId = req.params.userId;
 
     let sql = `
-        SELECT * FROM records
+        SELECT *
+        FROM records
         WHERE user_id = ?
         ORDER BY id DESC
     `;
@@ -280,49 +300,6 @@ app.get("/records/:userId", function(req, res){
             res.json({
                 success: true,
                 records: results
-            });
-
-        }
-
-    });
-
-});
-
-
-
-app.delete("/records/:recordId", function(req, res){
-
-    let recordId = req.params.recordId;
-
-    let sql = `
-        DELETE FROM records
-        WHERE id = ?
-    `;
-
-    db.query(sql, [recordId], function(error, result){
-
-        if(error){
-
-            res.json({
-                success: false,
-                message: "Record could not be deleted"
-            });
-
-        }
-
-        else{
-
-            addAuditLog(
-                null,
-                "User",
-                "Delete Record",
-                "Financial record deleted",
-                "Success"
-            );
-
-            res.json({
-                success: true,
-                message: "Record deleted successfully"
             });
 
         }
@@ -355,7 +332,7 @@ app.put("/records/:recordId", function(req, res){
             recordId
         ],
 
-        function(error, result){
+        function(error){
 
             if(error){
 
@@ -369,7 +346,7 @@ app.put("/records/:recordId", function(req, res){
             else{
 
                 addAuditLog(
-                    null,
+                    recordData.userId,
                     "User",
                     "Update Record",
                     "Financial record updated",
@@ -385,6 +362,49 @@ app.put("/records/:recordId", function(req, res){
 
         }
     );
+
+});
+
+
+
+app.delete("/records/:recordId", function(req, res){
+
+    let recordId = req.params.recordId;
+
+    let sql = `
+        DELETE FROM records
+        WHERE id = ?
+    `;
+
+    db.query(sql, [recordId], function(error){
+
+        if(error){
+
+            res.json({
+                success: false,
+                message: "Record could not be deleted"
+            });
+
+        }
+
+        else{
+
+            addAuditLog(
+                null,
+                "User",
+                "Delete Record",
+                "Financial record deleted",
+                "Success"
+            );
+
+            res.json({
+                success: true,
+                message: "Record deleted successfully"
+            });
+
+        }
+
+    });
 
 });
 
@@ -444,7 +464,7 @@ app.put("/users/:userId", function(req, res){
             userId
         ],
 
-        function(error, result){
+        function(error){
 
             if(error){
 
@@ -488,7 +508,7 @@ app.delete("/users/:userId", function(req, res){
         WHERE id = ?
     `;
 
-    db.query(sql, [userId], function(error, result){
+    db.query(sql, [userId], function(error){
 
         if(error){
 
@@ -533,6 +553,8 @@ app.get("/audit-logs", function(req, res){
     db.query(sql, function(error, results){
 
         if(error){
+
+            console.log(error);
 
             res.json({
                 success: false,
