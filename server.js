@@ -27,14 +27,21 @@ const db = mySql.createConnection({
 db.connect(function(error){
 
     if(error){
+
         console.log("Database connection failed");
         console.log(error);
+
     }
+
     else{
+
         console.log("Database connected successfully");
+
     }
 
 });
+
+
 
 function addAuditLog(userId, userName, action, description, status){
 
@@ -46,11 +53,14 @@ function addAuditLog(userId, userName, action, description, status){
     db.query(
         sql,
         [userId, userName, action, description, status],
+
         function(error){
 
             if(error){
+
                 console.log("Audit log failed");
                 console.log(error);
+
             }
 
         }
@@ -58,23 +68,28 @@ function addAuditLog(userId, userName, action, description, status){
 
 }
 
+
+
 app.get("/", function(req, res){
 
     res.send("Backend is running");
 
 });
 
+
+
 app.get("/test-version", function(req, res){
 
     res.json({
         success: true,
         message: "Latest Railway backend is running",
-        version: "user-management-fix-v3"
+        version: "audit-log-fix-v2"
     });
 
 });
 
-/* REGISTER */
+
+
 app.post("/register", function(req, res){
 
     let userData = req.body;
@@ -93,36 +108,42 @@ app.post("/register", function(req, res){
             userData.userRole,
             "Active"
         ],
+
         function(error, result){
 
             if(error){
-                console.log(error);
 
-                return res.json({
+                res.json({
                     success: false,
                     message: "Registration failed. Email may already exist."
                 });
+
             }
 
-            addAuditLog(
-                result.insertId,
-                userData.userName,
-                "Register",
-                "New user account created",
-                "Success"
-            );
+            else{
 
-            res.json({
-                success: true,
-                message: "Registration successful"
-            });
+                addAuditLog(
+                    result.insertId,
+                    userData.userName,
+                    "Register",
+                    "New user account created",
+                    "Success"
+                );
+
+                res.json({
+                    success: true,
+                    message: "Registration successful"
+                });
+
+            }
 
         }
     );
 
 });
 
-/* LOGIN */
+
+
 app.post("/login", function(req, res){
 
     let loginData = req.body;
@@ -139,51 +160,65 @@ app.post("/login", function(req, res){
             loginData.userEmail,
             loginData.userPassword
         ],
+
         function(error, results){
 
             if(error){
-                console.log(error);
 
-                return res.json({
+                res.json({
                     success: false,
                     message: "Login failed"
                 });
+
             }
 
-            if(results.length === 0){
-                return res.json({
+            else if(results.length > 0){
+
+                if(results[0].status === "Inactive"){
+
+                    res.json({
+                        success: false,
+                        message: "This account is inactive. Please contact an administrator."
+                    });
+
+                }
+
+                else{
+
+                    addAuditLog(
+                        results[0].id,
+                        results[0].name,
+                        "Login",
+                        "User logged into the system",
+                        "Success"
+                    );
+
+                    res.json({
+                        success: true,
+                        message: "Login successful",
+                        user: results[0]
+                    });
+
+                }
+
+            }
+
+            else{
+
+                res.json({
                     success: false,
                     message: "Wrong email or password"
                 });
+
             }
-
-            if(results[0].status === "Inactive"){
-                return res.json({
-                    success: false,
-                    message: "This account is inactive. Please contact an administrator."
-                });
-            }
-
-            addAuditLog(
-                results[0].id,
-                results[0].name,
-                "Login",
-                "User logged into the system",
-                "Success"
-            );
-
-            res.json({
-                success: true,
-                message: "Login successful",
-                user: results[0]
-            });
 
         }
     );
 
 });
 
-/* ADD RECORD */
+
+
 app.post("/records", function(req, res){
 
     let recordData = req.body;
@@ -202,36 +237,42 @@ app.post("/records", function(req, res){
             recordData.recordCategory,
             recordData.recordAmount
         ],
+
         function(error){
 
             if(error){
-                console.log(error);
 
-                return res.json({
+                res.json({
                     success: false,
                     message: "Record could not be saved"
                 });
+
             }
 
-            addAuditLog(
-                recordData.userId,
-                "User",
-                "Add Record",
-                "Financial record added",
-                "Success"
-            );
+            else{
 
-            res.json({
-                success: true,
-                message: "Record saved successfully"
-            });
+                addAuditLog(
+                    recordData.userId,
+                    "User",
+                    "Add Record",
+                    "Financial record added",
+                    "Success"
+                );
+
+                res.json({
+                    success: true,
+                    message: "Record saved successfully"
+                });
+
+            }
 
         }
     );
 
 });
 
-/* GET USER RECORDS */
+
+
 app.get("/records/:userId", function(req, res){
 
     let userId = req.params.userId;
@@ -246,27 +287,33 @@ app.get("/records/:userId", function(req, res){
     db.query(sql, [userId], function(error, results){
 
         if(error){
-            console.log(error);
 
-            return res.json({
+            res.json({
                 success: false,
                 message: "Could not load records"
             });
+
         }
 
-        res.json({
-            success: true,
-            records: results
-        });
+        else{
+
+            res.json({
+                success: true,
+                records: results
+            });
+
+        }
 
     });
 
 });
 
-/* UPDATE RECORD */
+
+
 app.put("/records/:recordId", function(req, res){
 
     let recordId = req.params.recordId;
+
     let recordData = req.body;
 
     let sql = `
@@ -284,36 +331,42 @@ app.put("/records/:recordId", function(req, res){
             recordData.recordAmount,
             recordId
         ],
+
         function(error){
 
             if(error){
-                console.log(error);
 
-                return res.json({
+                res.json({
                     success: false,
                     message: "Record could not be updated"
                 });
+
             }
 
-            addAuditLog(
-                recordData.userId || null,
-                "User",
-                "Update Record",
-                "Financial record updated",
-                "Success"
-            );
+            else{
 
-            res.json({
-                success: true,
-                message: "Record updated successfully"
-            });
+                addAuditLog(
+                    recordData.userId,
+                    "User",
+                    "Update Record",
+                    "Financial record updated",
+                    "Success"
+                );
+
+                res.json({
+                    success: true,
+                    message: "Record updated successfully"
+                });
+
+            }
 
         }
     );
 
 });
 
-/* DELETE RECORD */
+
+
 app.delete("/records/:recordId", function(req, res){
 
     let recordId = req.params.recordId;
@@ -326,32 +379,37 @@ app.delete("/records/:recordId", function(req, res){
     db.query(sql, [recordId], function(error){
 
         if(error){
-            console.log(error);
 
-            return res.json({
+            res.json({
                 success: false,
                 message: "Record could not be deleted"
             });
+
         }
 
-        addAuditLog(
-            null,
-            "User",
-            "Delete Record",
-            "Financial record deleted",
-            "Success"
-        );
+        else{
 
-        res.json({
-            success: true,
-            message: "Record deleted successfully"
-        });
+            addAuditLog(
+                null,
+                "User",
+                "Delete Record",
+                "Financial record deleted",
+                "Success"
+            );
+
+            res.json({
+                success: true,
+                message: "Record deleted successfully"
+            });
+
+        }
 
     });
 
 });
 
-/* GET ALL USERS */
+
+
 app.get("/users", function(req, res){
 
     let sql = `
@@ -363,88 +421,33 @@ app.get("/users", function(req, res){
     db.query(sql, function(error, results){
 
         if(error){
-            console.log(error);
 
-            return res.json({
+            res.json({
                 success: false,
                 message: "Could not load users"
             });
+
         }
 
-        res.json({
-            success: true,
-            users: results
-        });
+        else{
+
+            res.json({
+                success: true,
+                users: results
+            });
+
+        }
 
     });
 
 });
 
-/* ADD USER FROM ADMIN PAGE */
-app.post("/users", function(req, res){
 
-    let userData = req.body;
 
-    let userName = userData.name || userData.userName;
-    let userEmail = userData.email || userData.userEmail;
-    let userRole = userData.role || userData.userRole || "Taxpayer";
-    let userStatus = userData.status || "Active";
-    let userPassword = userData.password || userData.userPassword || "password123";
-
-    if(!userName || !userEmail){
-        return res.json({
-            success: false,
-            message: "Name and email are required"
-        });
-    }
-
-    let sql = `
-        INSERT INTO users(name, email, password, role, status)
-        VALUES (?, ?, ?, ?, ?)
-    `;
-
-    db.query(
-        sql,
-        [
-            userName,
-            userEmail,
-            userPassword,
-            userRole,
-            userStatus
-        ],
-        function(error, result){
-
-            if(error){
-                console.log(error);
-
-                return res.json({
-                    success: false,
-                    message: "User could not be added. Email may already exist."
-                });
-            }
-
-            addAuditLog(
-                result.insertId,
-                "Admin",
-                "Add User",
-                "New user added by administrator",
-                "Success"
-            );
-
-            res.json({
-                success: true,
-                message: "User added successfully"
-            });
-
-        }
-    );
-
-});
-
-/* UPDATE USER */
 app.put("/users/:userId", function(req, res){
 
     let userId = req.params.userId;
+
     let userData = req.body;
 
     let sql = `
@@ -460,102 +463,85 @@ app.put("/users/:userId", function(req, res){
             userData.status,
             userId
         ],
+
         function(error){
 
             if(error){
-                console.log(error);
 
-                return res.json({
+                res.json({
                     success: false,
                     message: "User update failed"
                 });
+
             }
 
-            addAuditLog(
-                userId,
-                "Admin",
-                "Update User",
-                "User role or status updated",
-                "Success"
-            );
+            else{
 
-            res.json({
-                success: true,
-                message: "User updated successfully"
-            });
+                addAuditLog(
+                    userId,
+                    "Admin",
+                    "Update User",
+                    "User role or status updated",
+                    "Success"
+                );
+
+                res.json({
+                    success: true,
+                    message: "User updated successfully"
+                });
+
+            }
 
         }
     );
 
 });
 
-/* DELETE USER */
+
+
 app.delete("/users/:userId", function(req, res){
 
     let userId = req.params.userId;
 
-    let deleteUserRecordsSql = `
-        DELETE FROM records
-        WHERE user_id = ?
-    `;
-
-    let deleteUserAuditLogsSql = `
-        DELETE FROM audit_logs
-        WHERE user_id = ?
-    `;
-
-    let deleteUserSql = `
+    let sql = `
         DELETE FROM users
         WHERE id = ?
     `;
 
-    db.query(deleteUserRecordsSql, [userId], function(error){
+    db.query(sql, [userId], function(error){
 
         if(error){
-            console.log(error);
 
-            return res.json({
+            res.json({
                 success: false,
-                message: "User records could not be deleted"
+                message: "User could not be deleted"
             });
+
         }
 
-        db.query(deleteUserAuditLogsSql, [userId], function(error){
+        else{
 
-            if(error){
-                console.log(error);
+            addAuditLog(
+                userId,
+                "Admin",
+                "Delete User",
+                "User account deleted",
+                "Success"
+            );
 
-                return res.json({
-                    success: false,
-                    message: "User audit logs could not be deleted"
-                });
-            }
-
-            db.query(deleteUserSql, [userId], function(error){
-
-                if(error){
-                    console.log(error);
-
-                    return res.json({
-                        success: false,
-                        message: "User could not be deleted"
-                    });
-                }
-
-                res.json({
-                    success: true,
-                    message: "User deleted successfully"
-                });
-
+            res.json({
+                success: true,
+                message: "User deleted successfully"
             });
 
-        });
+        }
 
     });
 
 });
 
-/* GET AUDIT LOGS */
+
+
 app.get("/audit-logs", function(req, res){
 
     let sql = `
@@ -567,22 +553,30 @@ app.get("/audit-logs", function(req, res){
     db.query(sql, function(error, results){
 
         if(error){
+
             console.log(error);
 
-            return res.json({
+            res.json({
                 success: false,
                 message: "Could not load audit logs"
             });
+
         }
 
-        res.json({
-            success: true,
-            logs: results
-        });
+        else{
+
+            res.json({
+                success: true,
+                logs: results
+            });
+
+        }
 
     });
 
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 
